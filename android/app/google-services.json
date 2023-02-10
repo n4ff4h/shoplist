@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "899637781024",
+    "project_id": "shoplist-naffah-me",
+    "storage_bucket": "shoplist-naffah-me.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:899637781024:android:7862ec511dbf207fd6d245",
+        "android_client_info": {
+          "package_name": "me.naffah.shoplist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "899637781024-fqcadtbm7jedo6ss4me06j2tmsjsl3md.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9omKu4R1KySP8c24IFbSIA-wKyayR254"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "899637781024-fqcadtbm7jedo6ss4me06j2tmsjsl3md.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
