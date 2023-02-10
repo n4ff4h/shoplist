@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:shoplist/controllers/auth_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -22,7 +23,29 @@ class ShoplistApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Shoplist',
-      home: Scaffold(),
+      home: HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends HookConsumerWidget {
+  const HomeScreen({super.key});
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authControllerState = ref.watch(authControllerProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Shopping List'),
+        leading: authControllerState != null
+            ? IconButton(
+                onPressed: () {
+                  ref.read(authControllerProvider.notifier).signOut();
+                },
+                icon: const Icon(Icons.logout),
+              )
+            : null,
+      ),
     );
   }
 }
