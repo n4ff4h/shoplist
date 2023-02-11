@@ -10,7 +10,7 @@ abstract class BaseItemRepository {
   // Returns the id of the created item in Firestore collection.
   Future<String> createItem({required String userId, required Item item});
   Future<void> updateItem({required String userId, required Item item});
-  Future<void> deleteItem({required String userId, required Item item});
+  Future<void> deleteItem({required String userId, required String itemId});
 }
 
 final itemRepositoryProvider =
@@ -47,7 +47,7 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<void> deleteItem({required String userId, required Item item}) async {
+  Future<void> updateItem({required String userId, required Item item}) async {
     try {
       await _ref
           .read(firebaseFirestoreProvider)
@@ -60,12 +60,13 @@ class ItemRepository implements BaseItemRepository {
   }
 
   @override
-  Future<void> updateItem({required String userId, required Item item}) async {
+  Future<void> deleteItem(
+      {required String userId, required String itemId}) async {
     try {
       await _ref
           .read(firebaseFirestoreProvider)
           .usersListRef(userId)
-          .doc(item.id)
+          .doc(itemId)
           .delete();
     } on FirebaseException catch (e) {
       throw CustomException(message: e.message);
