@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shoplist/controllers/auth_controller.dart';
 import 'package:shoplist/controllers/item_list_controller.dart';
 import 'package:shoplist/models/item_model.dart';
+import 'package:shoplist/repositories/custom_exception.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -36,6 +37,18 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authControllerState = ref.watch(authControllerProvider);
+
+    ref.listen<CustomException?>(
+      itemListExceptionProvider,
+      (prevException, newException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(newException!.message!),
+          ),
+        );
+      },
+    );
 
     return Scaffold(
       appBar: AppBar(
