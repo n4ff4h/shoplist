@@ -37,6 +37,8 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authControllerState = ref.watch(authControllerProvider);
+    final itemListFilter = ref.watch(itemListFilterProvider);
+    final isObtainedFilter = itemListFilter == ItemListFilter.obtained;
 
     ref.listen<CustomException?>(
       itemListExceptionProvider,
@@ -61,6 +63,17 @@ class HomeScreen extends HookConsumerWidget {
                 icon: const Icon(Icons.logout),
               )
             : null,
+        actions: [
+          IconButton(
+            onPressed: () => ref.read(itemListFilterProvider.notifier).state =
+                isObtainedFilter ? ItemListFilter.all : ItemListFilter.obtained,
+            icon: Icon(
+              isObtainedFilter
+                  ? Icons.check_circle
+                  : Icons.check_circle_outline,
+            ),
+          ),
+        ],
       ),
       body: const ItemList(),
       floatingActionButton: FloatingActionButton(
@@ -75,9 +88,10 @@ class ItemList extends HookConsumerWidget {
   const ItemList({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final itemList = ref.watch(itemListControllerProvider);
+    final itemListState = ref.watch(itemListControllerProvider);
+    final filteredItemList = ref.watch(filteredItemListProvider);
 
-    return itemList.when(
+    return itemListState.when(
       data: (items) => items.isEmpty
           ? const Center(
               child: Text(
@@ -86,9 +100,9 @@ class ItemList extends HookConsumerWidget {
               ),
             )
           : ListView.builder(
-              itemCount: items.length,
+              itemCount: filteredItemList.length,
               itemBuilder: (BuildContext context, int index) {
-                final item = items[index];
+                final item = filteredItemList[index];
 
                 return ListTile(
                   // Key used here to ensure check box animation does not rebuild when the list updates.

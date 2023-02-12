@@ -4,6 +4,31 @@ import 'package:shoplist/models/item_model.dart';
 import 'package:shoplist/repositories/custom_exception.dart';
 import 'package:shoplist/repositories/item_repository.dart';
 
+enum ItemListFilter {
+  all,
+  obtained,
+}
+
+final itemListFilterProvider =
+    StateProvider<ItemListFilter>((_) => ItemListFilter.all);
+
+final filteredItemListProvider = Provider<List<Item>>((ref) {
+  final itemListFilterState = ref.watch(itemListFilterProvider);
+  final itemListState = ref.watch(itemListControllerProvider);
+
+  return itemListState.maybeWhen(
+    data: (items) {
+      switch (itemListFilterState) {
+        case ItemListFilter.obtained:
+          return items.where((item) => item.obtained).toList();
+        default:
+          return items;
+      }
+    },
+    orElse: () => [],
+  );
+});
+
 final itemListExceptionProvider = StateProvider<CustomException?>((_) => null);
 
 final itemListControllerProvider =
